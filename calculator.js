@@ -12,7 +12,7 @@ function createNumbers() {
         let tmp = i;
 
         if (tmp == 10) tmp = "0";
-        else if (tmp == 11) tmp = ".";
+        else if (tmp == 11) tmp = ",";
         else if (tmp == 12) tmp = "C";
         const button = document.createElement("button");
         button.textContent = `${tmp}`;

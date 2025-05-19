@@ -1,7 +1,7 @@
 main {
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-rows: 0.5fr 2fr;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 0.7fr 2fr;
     grid-template-areas:
         "screen-bar screen-bar"
         "number-bar operator-bar";
@@ -22,6 +22,9 @@ main {
 }
 
 #number-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
     padding: 1.8rem;
     grid-area: number-bar;
     background-color: lightsalmon;
@@ -29,22 +32,28 @@ main {
 }
 
 #operator-bar {
+    display: grid;
+    grid-template-columns: repeat(1, 0.5fr);
     grid-area: operator-bar;
     background-color: lightgreen;
     border: 2px solid lightgrey;
 }
 
 #number-bar button {
-    height: 7rem;
-    width: 7rem;
+    height: 6rem;
+    width: 6rem;
     padding: 2rem;
-    margin: 0.2rem;
     font-size: 1.5rem;
     border: 2px solid #ccc;
     border-radius: 6px;
     background-color: whitesmoke;
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+#number-bar button:hover {
+    background-color: lightgrey;
+    border: 2px solid grey;
 }
 
 btn-0 {
