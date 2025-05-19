@@ -1,0 +1,33 @@
+main {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 0.5fr 2fr;
+    grid-template-areas:
+        "screen-bar screen-bar"
+        "number-bar operator-bar";
+
+    height: 90vh;
+    width: 40vw;
+    margin: 4vh auto;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border: 3px solid lightgrey;
+    border-radius: 3px;
+}
+
+#screen-bar {
+    grid-area: screen-bar;
+    background-color: lightblue;
+}
+
+#number-bar {
+    grid-area: number-bar;
+    background-color: lightsalmon;
+}
+
+#operator-bar {
+    grid-area: operator-bar;
+    background-color: lightgreen;
+}
+
+
