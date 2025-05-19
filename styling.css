@@ -18,16 +18,35 @@ main {
 #screen-bar {
     grid-area: screen-bar;
     background-color: lightblue;
+    border: 2px solid lightgrey;
 }
 
 #number-bar {
+    padding: 1.8rem;
     grid-area: number-bar;
     background-color: lightsalmon;
+    border: 2px solid lightgrey;
 }
 
 #operator-bar {
     grid-area: operator-bar;
     background-color: lightgreen;
+    border: 2px solid lightgrey;
 }
 
+#number-bar button {
+    height: 7rem;
+    width: 7rem;
+    padding: 2rem;
+    margin: 0.2rem;
+    font-size: 1.5rem;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: whitesmoke;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
+btn-0 {
+    width: 14rem;
+}

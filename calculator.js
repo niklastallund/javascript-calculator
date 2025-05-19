@@ -1,13 +1,22 @@
+window.onload = function () {
+    createNumbers();
+};
+
 function createNumbers() {
-    const gridContainer = document.getElementById("numer-bar");
+    const gridContainer = document.getElementById("number-bar");
     const messageDisplay = document.getElementById("message");
     let selectedButton = null;
 
     // Generate 9 buttons (3x3 grid)
-    for (let i = 0; i < 9; i++) {
+    for (let i = 1; i <= 12; i++) {
+        let tmp = i;
+
+        if (tmp == 10) tmp = "0";
+        else if (tmp == 11) tmp = ".";
+        else if (tmp == 12) tmp = "C";
         const button = document.createElement("button");
-        button.textContent = `Button ${i + 1}`;
-        button.id = `btn-${i}`;
+        button.textContent = `${tmp}`;
+        button.id = `btn-${tmp}`;
 
         // Add click event listener
         button.addEventListener("click", function () {
