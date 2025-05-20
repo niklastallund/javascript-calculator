@@ -1,6 +1,7 @@
 let currentValue = "";
 let storedValue = 0;
 let pendingOperator = false;
+let storedOperator = "";
 
 window.onload = function () {
     createNumbers();
@@ -76,8 +77,6 @@ function createOperators() {
 }
 
 function buttonPressed(button) {
-    const screen = document.getElementById("screen");
-
     if (button.classList.contains("operator")) {
         pressedOperator(button);
     } else {
@@ -97,16 +96,19 @@ function pressedOperator(button) {
 
     switch (op) {
         case "C":
+            //Reset everything to default values
             currentValue = "";
             storedValue = 0;
             pendingOperator = false;
             screen.textContent = currentValue;
             break;
+        case "=":
+            break;
         case "+":
-            if (currentValue !== "") {
-                //If currentValue == "" we're changing operator.
-                calculatePlus(screen);
-            }
+        case "-":
+        case "x":
+        case "÷":
+            if (currentValue !== "") calculatePlus(screen);
             break;
     }
 }
@@ -125,3 +127,5 @@ function calculatePlus(screen) {
     screen.textContent = storedValue.toString();
     currentValue = "";
 }
+
+function calculateMinus(screen) {}
