@@ -16,6 +16,7 @@ function createNumbers() {
         const button = document.createElement("button");
         button.textContent = `${tmp}`;
         button.id = `btn-${tmp}`;
+        button.classList.add("number");
 
         //Special case for wide button 0
         if (button.id == "btn-0") button.classList.add("zero");
@@ -30,6 +31,9 @@ function createNumbers() {
             // Set new selected button
             selectedButton = this;
             selectedButton.classList.add("selected");
+
+            //Run the clicked button function
+            buttonPressed(button);
         });
 
         // Add button to grid
@@ -46,6 +50,7 @@ function createOperators() {
         const button = document.createElement("button");
         button.textContent = `${val}`;
         button.id = `btn-${val}`;
+        button.classList.add("operator");
 
         button.addEventListener("click", function () {
             // Remove selected class from previously selected button
@@ -56,9 +61,20 @@ function createOperators() {
             // Set new selected button
             selectedButton = this;
             selectedButton.classList.add("selected");
+
+            //Run the clicked button function
+            buttonPressed(button);
         });
 
         // Add button to grid
         gridContainer.appendChild(button);
     });
+}
+
+function buttonPressed(button) {
+    const screen = document.getElementById("screen");
+    screen.textContent = button.type;
+
+    if (button.classList.contains("operator")) screen.textContent = "operator";
+    else screen.textContent = "number";
 }
