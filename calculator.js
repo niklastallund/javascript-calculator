@@ -1,9 +1,3 @@
-/*  
-    TODO:
-    *Negative numbers button
-    *Percentage button
-*/
-
 let currentValue = "";
 let storedValue = 0;
 let storedOperator = "";
