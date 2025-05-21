@@ -1,3 +1,9 @@
+/*  
+    TODO:
+    *Negative numbers button
+    *Percentage button
+*/
+
 let currentValue = "";
 let storedValue = 0;
 let storedOperator = "";
@@ -86,8 +92,27 @@ function buttonPressed(button) {
 function pressedNumber(button) {
     //Set currentValue and print it to screen.
     const screen = document.getElementById("screen");
+    const number = button.id.charAt(4);
+
+    if (number === ".") {
+        //Check if decimal point already exists
+        if (currentValue === "" || currentValue.includes(".")) {
+            return;
+        }
+    }
+
     currentValue += button.id.charAt(4);
-    screen.textContent = currentValue;
+
+    //If we're out of bounds, just reset everything (I'm lazy)
+    if (currentValue.length > 24) {
+        screen.textContent = "Error: OUT OF BOUNDS";
+        currentValue = "";
+        storedValue = 0;
+        storedOperator = "";
+    } else {
+        screen.textContent = currentValue;
+    }
+    return;
 }
 
 function pressedOperator(button) {
@@ -100,11 +125,10 @@ function pressedOperator(button) {
             currentValue = "";
             storedValue = 0;
             storedOperator = "";
-            pendingOperator = false;
             screen.textContent = currentValue;
             break;
         case "=":
-            if(storedOperator && currentValue !== ""){
+            if (storedOperator && currentValue !== "") {
                 //Calculate and clear the operator
                 calculate(storedOperator, screen);
                 storedOperator = "";
@@ -120,7 +144,7 @@ function pressedOperator(button) {
                     calculate(storedOperator, screen);
                 } else {
                     //First operation of a calculation chain
-                    storedValue = parseInt(currentValue) || 0;
+                    storedValue = parseFloat(currentValue) || 0;
                     screen.textContent = storedValue.toString();
                     currentValue = "";
                 }
@@ -135,21 +159,21 @@ function calculate(op, screen) {
     //Calculate using given operator
     switch (op) {
         case "+":
-            storedValue = storedValue + (parseInt(currentValue) || 0);
+            storedValue = storedValue + (parseFloat(currentValue) || 0);
             break;
         case "-":
-            storedValue = storedValue - (parseInt(currentValue) || 0);
+            storedValue = storedValue - (parseFloat(currentValue) || 0);
             break;
         case "x":
-            storedValue = storedValue * (parseInt(currentValue) || 0);
+            storedValue = storedValue * (parseFloat(currentValue) || 0);
             break;
         case "÷":
-            if (parseInt(currentValue) === 0) {
+            if (parseFloat(currentValue) === 0) {
                 //Cannot divide by 0, error.
-                screen.textContent = "Error";
+                screen.textContent = "Error: DIVIDE BY ZERO";
                 return;
             }
-            storedValue = storedValue / (parseInt(currentValue) || 1);
+            storedValue = storedValue / (parseFloat(currentValue) || 1);
             break;
     }
 
