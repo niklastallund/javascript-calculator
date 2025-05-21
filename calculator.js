@@ -1,6 +1,5 @@
 let currentValue = "";
 let storedValue = 0;
-let pendingOperator = false;
 let storedOperator = "";
 
 window.onload = function () {
@@ -12,7 +11,7 @@ function createNumbers() {
     const gridContainer = document.getElementById("number-bar");
     let selectedButton = null;
 
-    // Generate 9 buttons (3x3 grid)
+    // Generate number bar (11 buttons, 3x4 grid)
     for (let i = 1; i <= 11; i++) {
         let tmp = i;
 
@@ -85,6 +84,7 @@ function buttonPressed(button) {
 }
 
 function pressedNumber(button) {
+    //Set currentValue and print it to screen.
     const screen = document.getElementById("screen");
     currentValue += button.id.charAt(4);
     screen.textContent = currentValue;
@@ -99,33 +99,61 @@ function pressedOperator(button) {
             //Reset everything to default values
             currentValue = "";
             storedValue = 0;
+            storedOperator = "";
             pendingOperator = false;
             screen.textContent = currentValue;
             break;
         case "=":
+            if(storedOperator && currentValue !== ""){
+                //Calculate and clear the operator
+                calculate(storedOperator, screen);
+                storedOperator = "";
+            }
             break;
         case "+":
         case "-":
         case "x":
         case "÷":
-            if (currentValue !== "") calculatePlus(screen);
+            if (currentValue !== "") {
+                if (storedOperator) {
+                    //If there is a stored operator, do that calculation first!
+                    calculate(storedOperator, screen);
+                } else {
+                    //First operation of a calculation chain
+                    storedValue = parseInt(currentValue) || 0;
+                    screen.textContent = storedValue.toString();
+                    currentValue = "";
+                }
+            }
+            //Store the new operator for next sequence.
+            storedOperator = op;
             break;
     }
 }
 
-function calculatePlus(screen) {
-    if (pendingOperator) {
-        // Continue the calculation chain
-        storedValue = storedValue + parseInt(currentValue);
-    } else {
-        // First part of calculation chain
-        storedValue = parseInt(currentValue);
-        pendingOperator = true;
+function calculate(op, screen) {
+    //Calculate using given operator
+    switch (op) {
+        case "+":
+            storedValue = storedValue + (parseInt(currentValue) || 0);
+            break;
+        case "-":
+            storedValue = storedValue - (parseInt(currentValue) || 0);
+            break;
+        case "x":
+            storedValue = storedValue * (parseInt(currentValue) || 0);
+            break;
+        case "÷":
+            if (parseInt(currentValue) === 0) {
+                //Cannot divide by 0, error.
+                screen.textContent = "Error";
+                return;
+            }
+            storedValue = storedValue / (parseInt(currentValue) || 1);
+            break;
     }
 
     // Write the output to the screen and clear the current value
     screen.textContent = storedValue.toString();
     currentValue = "";
 }
-
-function calculateMinus(screen) {}
