@@ -17,12 +17,12 @@ function createNumbers() {
     const gridContainer = document.getElementById("number-bar");
     let selectedButton = null;
 
-    // Generate number bar (11 buttons, 3x4 grid)
+    // Generate number grid (3x4 grid)
     for (let i = 1; i <= 11; i++) {
         let tmp = i;
 
         if (tmp == 10) tmp = "0";
-        else if (tmp == 11) tmp = ".";
+        else if (tmp == 11) tmp = "."; //Decimal point generation
         const button = document.createElement("button");
         button.textContent = `${tmp}`;
         button.id = `btn-${tmp}`;
@@ -56,6 +56,7 @@ function createOperators() {
     let selectedButton = null;
     let operatorArray = ["+", "-", "x", "÷", "±", "%", "=", "C"];
 
+    //Generate operator grid (2x4)
     operatorArray.forEach((val) => {
         const button = document.createElement("button");
         button.textContent = `${val}`;
@@ -127,6 +128,7 @@ function pressedOperator(button) {
             storedOperator = "";
             screen.textContent = currentValue;
             break;
+
         case "=":
             if (storedOperator && currentValue !== "") {
                 //Calculate and clear the operator
@@ -134,6 +136,11 @@ function pressedOperator(button) {
                 storedOperator = "";
             }
             break;
+
+        case "±":
+            negativeToggle(screen);
+            break;
+
         case "+":
         case "-":
         case "x":
@@ -161,12 +168,15 @@ function calculate(op, screen) {
         case "+":
             storedValue = storedValue + (parseFloat(currentValue) || 0);
             break;
+
         case "-":
             storedValue = storedValue - (parseFloat(currentValue) || 0);
             break;
+
         case "x":
             storedValue = storedValue * (parseFloat(currentValue) || 0);
             break;
+
         case "÷":
             if (parseFloat(currentValue) === 0) {
                 //Cannot divide by 0, error.
@@ -180,4 +190,25 @@ function calculate(op, screen) {
     // Write the output to the screen and clear the current value
     screen.textContent = storedValue.toString();
     currentValue = "";
+}
+
+function negativeToggle(screen) {
+    if (currentValue != "") {
+        //Check if number is already negative
+        if (currentValue.startsWith("-")) {
+            currentValue = currentValue.substring(1); //Remove negative
+        } else {
+            currentValue = "-" + currentValue; //Add negative
+        }
+
+        screen.textContent = currentValue;
+    } else if (storedValue !== 0 || screen.textContent !== "") {
+        //Negating storedValue is usally done when the user has used the = operator and then pressed negative
+        storedValue = -storedValue;
+        screen.textContent = storedValue.toString();
+    } else {
+        //If screen is empty and no stored value is found, just add a negative sign
+        currentValue = "-";
+        screen.textContent = currentValue;
+    }
 }
