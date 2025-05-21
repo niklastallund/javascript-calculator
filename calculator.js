@@ -141,6 +141,21 @@ function pressedOperator(button) {
             negativeToggle(screen);
             break;
 
+        case "%":
+            if (currentValue !== "") {
+                if (storedOperator) {
+                    //If there is a stored operator, do that calculation first!
+                    calculate(storedOperator, screen);
+                    currentValue = (storedValue / 100).toString();
+                } else {
+                    currentValue = (parseFloat(currentValue) / 100).toString();
+                }
+
+                screen.textContent = currentValue;
+                storedOperator = "";
+            }
+            break;
+
         case "+":
         case "-":
         case "x":
@@ -194,13 +209,12 @@ function calculate(op, screen) {
 
 function negativeToggle(screen) {
     if (currentValue != "") {
-        //Check if number is already negative
         if (currentValue.startsWith("-")) {
+            //Check if number is already negative
             currentValue = currentValue.substring(1); //Remove negative
         } else {
             currentValue = "-" + currentValue; //Add negative
         }
-
         screen.textContent = currentValue;
     } else if (storedValue !== 0 || screen.textContent !== "") {
         //Negating storedValue is usally done when the user has used the = operator and then pressed negative
