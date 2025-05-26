@@ -144,10 +144,12 @@ function pressedOperator(button) {
                 } else {
                     currentValue = (parseFloat(currentValue) / 100).toString();
                 }
-
-                screen.textContent = currentValue;
-                storedOperator = "";
+            } else {
+                // We go here when = operator was used before.
+                currentValue = (storedValue / 100).toString();
             }
+            screen.textContent = currentValue;
+            storedOperator = "";
             break;
 
         case "+":
