@@ -16,13 +16,13 @@ function createNumbers() {
         let tmp = i;
 
         if (tmp == 10) tmp = "0";
-        else if (tmp == 11) tmp = "."; //Decimal point generation
+        else if (tmp == 11) tmp = "."; // Decimal point generation
         const button = document.createElement("button");
         button.textContent = `${tmp}`;
         button.id = `btn-${tmp}`;
         button.classList.add("number");
 
-        //Special case for wide button 0
+        // Special case for wide button 0
         if (button.id == "btn-0") button.classList.add("zero");
 
         // Add click event listener
@@ -36,7 +36,7 @@ function createNumbers() {
             selectedButton = this;
             selectedButton.classList.add("selected");
 
-            //Run the clicked button function
+            // Run the clicked button function
             buttonPressed(button);
         });
 
@@ -50,7 +50,7 @@ function createOperators() {
     let selectedButton = null;
     let operatorArray = ["+", "-", "x", "÷", "±", "%", "=", "C"];
 
-    //Generate operator grid (2x4)
+    // Generate operator grid (2x4)
     operatorArray.forEach((val) => {
         const button = document.createElement("button");
         button.textContent = `${val}`;
@@ -67,7 +67,7 @@ function createOperators() {
             selectedButton = this;
             selectedButton.classList.add("selected");
 
-            //Run the clicked button function
+            // Run the clicked button function
             buttonPressed(button);
         });
 
@@ -85,12 +85,12 @@ function buttonPressed(button) {
 }
 
 function pressedNumber(button) {
-    //Set currentValue and print it to screen.
+    // Set currentValue and print it to screen.
     const screen = document.getElementById("screen");
     const number = button.id.charAt(4);
 
     if (number === ".") {
-        //Check if decimal point already exists
+        // Check if decimal point already exists
         if (currentValue === "" || currentValue.includes(".")) {
             return;
         }
@@ -98,7 +98,7 @@ function pressedNumber(button) {
 
     currentValue += button.id.charAt(4);
 
-    //If we're out of bounds, just reset everything (I'm lazy)
+    // If we're out of bounds, just reset everything (I'm lazy)
     if (currentValue.length > 24) {
         screen.textContent = "Error: OUT OF BOUNDS";
         currentValue = "";
@@ -116,7 +116,7 @@ function pressedOperator(button) {
 
     switch (op) {
         case "C":
-            //Reset everything to default values
+            // Reset everything to default values
             currentValue = "";
             storedValue = 0;
             storedOperator = "";
@@ -138,7 +138,7 @@ function pressedOperator(button) {
         case "%":
             if (currentValue !== "") {
                 if (storedOperator) {
-                    //If there is a stored operator, do that calculation first!
+                    // If there is a stored operator, do that calculation first!
                     calculate(storedOperator, screen);
                     currentValue = (storedValue / 100).toString();
                 } else {
@@ -158,23 +158,23 @@ function pressedOperator(button) {
         case "÷":
             if (currentValue !== "") {
                 if (storedOperator) {
-                    //If there is a stored operator, do that calculation first!
+                    // If there is a stored operator, do that calculation first!
                     calculate(storedOperator, screen);
                 } else {
-                    //First operation of a calculation chain
+                    // First operation of a calculation chain
                     storedValue = parseFloat(currentValue) || 0;
                     screen.textContent = storedValue.toString();
                     currentValue = "";
                 }
             }
-            //Store the new operator for next sequence.
+            // Store the new operator for next sequence.
             storedOperator = op;
             break;
     }
 }
 
 function calculate(op, screen) {
-    //Calculate using given operator
+    // Calculate using given operator
     switch (op) {
         case "+":
             storedValue = storedValue + (parseFloat(currentValue) || 0);
@@ -190,7 +190,7 @@ function calculate(op, screen) {
 
         case "÷":
             if (parseFloat(currentValue) === 0) {
-                //Cannot divide by 0, error.
+                // Cannot divide by 0, error.
                 screen.textContent = "Error: DIVIDE BY ZERO";
                 return;
             }
@@ -206,18 +206,18 @@ function calculate(op, screen) {
 function negativeToggle(screen) {
     if (currentValue != "") {
         if (currentValue.startsWith("-")) {
-            //Check if number is already negative
-            currentValue = currentValue.substring(1); //Remove negative
+            // Check if number is already negative
+            currentValue = currentValue.substring(1); // Remove negative
         } else {
-            currentValue = "-" + currentValue; //Add negative
+            currentValue = "-" + currentValue; // Add negative
         }
         screen.textContent = currentValue;
     } else if (storedValue !== 0 || screen.textContent !== "") {
-        //Negating storedValue is usally done when the user has used the = operator and then pressed negative
+        // Negating storedValue is usally done when the user has used the = operator and then pressed negative
         storedValue = -storedValue;
         screen.textContent = storedValue.toString();
     } else {
-        //If screen is empty and no stored value is found, just add a negative sign
+        // If screen is empty and no stored value is found, just add a negative sign
         currentValue = "-";
         screen.textContent = currentValue;
     }
